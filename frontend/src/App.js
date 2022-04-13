@@ -18,7 +18,8 @@ function App() {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: studentName,
       mode:"no-cors"
-    }).then(response=>{
+    }).then((response)=>{
+      console.log(response.status)
       getData()
     })
   }
@@ -39,7 +40,7 @@ function App() {
                 </ul>
             </div>
 
-            
+
                 <div className="col-md-6">
                     <h2>Add student!!!</h2>
                     <form onSubmit={(e)=>submitForm(e)}>
