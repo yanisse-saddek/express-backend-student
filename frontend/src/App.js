@@ -3,6 +3,7 @@ import axios from 'axios'
 function App() {
   const [students, setStudents] = useState(null)
   const [studentName, setName] = useState(null)
+  const [error, setError] = useState(false)
   useEffect(()=>{
     getData()
   }, [])
@@ -12,17 +13,34 @@ function App() {
     })
   }
   const submitForm = (e)=>{
+    console.log('ok', studentName )
     e.preventDefault()
-    fetch("http://localhost:5000/students", {
+    const option = {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: studentName,
-      mode:"no-cors"
-    }).then((response)=>{
-      console.log(response.status)
+    }
+    const url = "http://localhost:5000/students"
+
+    fetch(url, option)
+    .then(response=>{
+      if(response.status===200){
+        const response2 = response.json()
+        setError(false)
+        return response2
+      }else{
+        showError()
+      }
+    })  
+    .then((result)=>{
+      console.log(result)
       getData()
     })
   }
+  const showError = ()=>{
+    setError(true)
+  }
+
   return (
     <div className="container">
         <div className="row">
@@ -43,6 +61,15 @@ function App() {
 
                 <div className="col-md-6">
                     <h2>Add student!!!</h2>
+                    {
+                      error 
+                      ?
+                      <div class="alert alert-danger" role="alert">
+                        Existe deja
+                      </div>
+                      :
+                      null
+                    }
                     <form onSubmit={(e)=>submitForm(e)}>
                         <div className="form-group">
                             <label htmlFor="exampleInputEmail1">Student name:</label>

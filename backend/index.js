@@ -15,7 +15,17 @@ app.get('/students', (req, res)=>{
 })
 app.post('/students', (req, res)=>{ 
     var name = Object.keys(req.body)[0]
-    students.push(name)    
-    res.redirect('back');
+    console.log(name)
+    if(!students.includes(name)){
+        students.push(name)  
+        res.status(200).send({
+            data:'salut'
+        });        
+    }else{
+        console.log('ca amrche pas!!')
+        res.status(400).send({
+            data:"eh non! l'utilisateur "+name+" existe deja"
+        })
+    }
 })
 app.listen(5000)
